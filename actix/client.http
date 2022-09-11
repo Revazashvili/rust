@@ -1,0 +1,56 @@
+### tickets
+
+GET /api/tickets HTTP/1.1
+Host: localhost:7878
+x-api-key: actix
+
+### ticket by id
+
+GET /api/tickets/2 HTTP/1.1
+Host: localhost:7878
+x-api-key: actix
+
+
+### insert new ticket
+
+POST /api/tickets HTTP/1.1
+Host: localhost:7878
+Content-Type: application/json
+Content-Length: 50
+x-api-key: actix
+
+{
+    "id": 4,
+    "author":"Levan Revazashvili"
+}
+
+### update ticket by id
+
+PUT /api/tickets/2 HTTP/1.1
+Host: localhost:7878
+Content-Type: application/json
+Content-Length: 53
+x-api-key: actix
+
+{
+    "id": 2,
+    "author": "Patrick Star updated"
+}
+
+### delete ticket
+
+DELETE /api/tickets/2 HTTP/1.1
+Host: localhost:7878
+Content-Type: application/json
+Content-Length: 53
+x-api-key: actix
+
+{
+    "id": 2,
+    "author": "Patrick Star updated"
+}
+
+### ping
+
+GET /ping HTTP/1.1
+Host: localhost:7878

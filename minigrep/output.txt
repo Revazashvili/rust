@@ -1,0 +1,8 @@
+case_sensitive: false
+Searching for it
+In file poem.txt
+of type and scrambled it to make
+a type specimen book. It has survived
+unchanged. It was popularised
+in the 1960s with the release of
+with desktop publishing software

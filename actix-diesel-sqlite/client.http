@@ -1,0 +1,17 @@
+### posts
+GET / HTTP/1.1
+Host: localhost:7878
+
+### create post
+POST /create HTTP/1.1
+HOST: localhost:7878
+Content-Type: application/json
+
+{
+    "title":"title 10",
+    "body":"body 10"
+}
+
+### publish post
+PUT /publish/3b48da03-dd5f-4ae0-8d5e-d70bccf4ab4c HTTP/1.1
+HOST: localhost:7878
