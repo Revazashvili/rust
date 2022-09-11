@@ -1,13 +1,13 @@
 use std::convert::Infallible;
 use warp::{self, http::StatusCode};
 
-use crate::models::Customer;
 use crate::db::Db;
+use crate::models::Customer;
 
 /// Returns a list of customers as JSON
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `db` - `Db` -> thread safe vector of Customer objects
 pub async fn list_customers(db: Db) -> Result<impl warp::Reply, Infallible> {
     let customers = db.lock().await;
@@ -15,17 +15,19 @@ pub async fn list_customers(db: Db) -> Result<impl warp::Reply, Infallible> {
     Ok(warp::reply::json(&customers))
 }
 
-
 /// Creates a new customer
-/// 
-/// Adds a new customer to the data store if the customer 
+///
+/// Adds a new customer to the data store if the customer
 /// doesn't already exist.
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `new_customer` - `Customer` type
 /// * `db` - `Db` -> thread safe vector of Customer objects
-pub async fn create_customer(new_customer:Customer,db: Db) -> Result<impl warp::Reply, Infallible> {
+pub async fn create_customer(
+    new_customer: Customer,
+    db: Db,
+) -> Result<impl warp::Reply, Infallible> {
     let mut customers = db.lock().await;
     for customer in customers.iter() {
         if customer.guid == new_customer.guid {
@@ -37,12 +39,12 @@ pub async fn create_customer(new_customer:Customer,db: Db) -> Result<impl warp::
 }
 
 /// Gets a single customer from the data store
-/// 
+///
 /// Returns a JSON object of an existing customer. If the customer
 /// is not found, it returns a NOT FOUND status code.
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `guid` - `String` -> the id of the customer to retrieve
 /// * `db` - `Db` -> thread safe vector of Customer objects
 pub async fn get_customer(guid: String, db: Db) -> Result<Box<dyn warp::Reply>, Infallible> {
@@ -55,19 +57,22 @@ pub async fn get_customer(guid: String, db: Db) -> Result<Box<dyn warp::Reply>, 
     Ok(Box::new(StatusCode::NOT_FOUND))
 }
 
-
-/// Gets a single customer from the data store
-/// 
+/// Updates customers
+///
 /// Overwrites an existing customer in the data store and returns
-/// an OK status code. If the customer is not found, a NOT FOUND status 
+/// an OK status code. If the customer is not found, a NOT FOUND status
 /// code is returned.
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `guid` - `String` -> the id of the customer to update
 /// * `updated_customer` - `Customer` -> updated customer information
 /// * `db` - `Db` -> thread safe vector of Customer objects
-pub async fn update_customer(guid: String, updated_customer:Customer, db: Db) -> Result<impl warp::Reply, Infallible> {
+pub async fn update_customer(
+    guid: String,
+    updated_customer: Customer,
+    db: Db,
+) -> Result<impl warp::Reply, Infallible> {
     let mut customers = db.lock().await;
     for customer in customers.iter_mut() {
         if customer.guid == guid {
@@ -78,16 +83,14 @@ pub async fn update_customer(guid: String, updated_customer:Customer, db: Db) ->
     Ok(StatusCode::NOT_FOUND)
 }
 
-
-
 /// Deletes a customer from the data store
-/// 
+///
 /// If the customer exists in the data store, the customer is removed
 /// and a NO CONTENT status code is returned. If the customer does not exist,
 /// a NOT FOUND status code is returned.
-/// 
+///
 /// # Arguments
-/// 
+///
 /// * `guid` - `String` -> the id of the customer to delete
 /// * `db` - `Db` -> thread safe vector of Customer objects
 pub async fn delete_customer(guid: String, db: Db) -> Result<impl warp::Reply, Infallible> {
@@ -98,7 +101,7 @@ pub async fn delete_customer(guid: String, db: Db) -> Result<impl warp::Reply, I
     let deleted = customers.len() != customer_count;
     if deleted {
         Ok(StatusCode::NO_CONTENT)
-    } else{
+    } else {
         Ok(StatusCode::NOT_FOUND)
     }
 }
