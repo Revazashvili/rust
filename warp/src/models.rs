@@ -1,7 +1,7 @@
-use serde::{Serialize,Deserialize};
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone,Debug,Default,Serialize,Deserialize)]
-pub struct Customer{
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct Customer {
     /// A unique identifier for this customer.
     pub guid: String,
     /// First name
