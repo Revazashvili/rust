@@ -13,25 +13,26 @@ impl Storage for InMemoryStorage {
         }
     }
 
-    fn list(&self) -> Option<&Vec<Customer>> {
+    fn list(&self) -> Option<Vec<Customer>> {
         if self.customers.is_empty() {
             None
         } else {
-            Some(&self.customers)
+            Some(self.customers.clone())
         }
     }
 
-    fn get(&self, guid: String) -> Option<&Customer> {
+    fn get(&self, guid: String) -> Option<Customer> {
         for customer in &self.customers {
             if customer.guid == guid {
-                return Some(customer);
+                return Some(customer.clone());
             }
         }
         None
     }
 
-    fn create(&mut self, customer: Customer) {
+    fn create(&mut self, customer: Customer) -> bool {
         let _ = self.customers.push(customer);
+        true
     }
 
     fn update(&mut self, guid: String, customer: Customer) -> bool {

@@ -1,6 +1,7 @@
 use super::models::Customer;
 
 mod in_memory_storage;
+mod mongodb_storage;
 
 /// Type to access Customer storage
 pub trait Storage {
@@ -9,7 +10,7 @@ pub trait Storage {
     /// Returns list of Customer
     ///
     /// Returns list of customer if exists.
-    fn list(&self) -> Option<&Vec<Customer>>;
+    fn list(&self) -> Option<Vec<Customer>>;
     /// Gets a single customer
     ///
     /// Returns single customer if exists.
@@ -17,14 +18,14 @@ pub trait Storage {
     /// # Arguments
     ///
     /// * guid - `String' -> the id of the customer to retrieve.
-    fn get(&self, guid: String) -> Option<&Customer>;
+    fn get(&self, guid: String) -> Option<Customer>;
     /// Creates a new customer
     ///
     /// Returns `True` if successfully creates `Customer` or otherwise false.
     /// # Arguments
     ///
     /// * customer - `Customer` type
-    fn create(&mut self, customer: Customer);
+    fn create(&mut self, customer: Customer) -> bool;
     /// Updates customers
     ///
     /// Returns `True` if successfully updates `Customer` or otherwise false.
