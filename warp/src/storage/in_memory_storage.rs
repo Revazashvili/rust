@@ -57,14 +57,14 @@ mod tests {
     use super::InMemoryStorage;
 
     #[test]
-    fn list_retuns_none_when_empty() {
+    fn list_return_none_when_empty() {
         let storage = InMemoryStorage::init();
         let list = storage.list();
         assert_eq!(true, list.is_none())
     }
 
     #[test]
-    fn list_retuns_some_when_not_empty() {
+    fn list_return_some_when_not_empty() {
         let mut storage = InMemoryStorage::init();
         storage.customers.push(Customer {
             guid: String::from("1234"),
@@ -79,14 +79,14 @@ mod tests {
     }
 
     #[test]
-    fn get_retuns_non_when_empty() {
+    fn get_return_non_when_empty() {
         let storage = InMemoryStorage::init();
         let customer = storage.get(String::from("1234"));
         assert_eq!(true, customer.is_none());
     }
 
     #[test]
-    fn get_retuns_some_when_not_empty() {
+    fn get_return_some_when_not_empty() {
         let mut storage = InMemoryStorage::init();
         storage.customers.push(Customer {
             guid: String::from("1234"),
@@ -100,7 +100,7 @@ mod tests {
     }
 
     #[test]
-    fn get_retuns_none_when_passed_empty_guid() {
+    fn get_return_none_when_passed_empty_guid() {
         let mut storage = InMemoryStorage::init();
         storage.customers.push(Customer {
             guid: String::from("1234"),
