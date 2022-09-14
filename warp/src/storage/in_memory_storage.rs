@@ -56,6 +56,29 @@ mod tests {
 
     use super::InMemoryStorage;
 
+    fn add_customer(storage: &mut InMemoryStorage){
+        storage.customers.push(Customer {
+            guid: String::from("1234"),
+            first_name: String::from("John"),
+            last_name: String::from("Doe"),
+            email: String::from("johndoe@gmail.com"),
+            address: String::from("address"),
+        });
+    }
+
+    fn update_customer(storage: &mut InMemoryStorage) -> bool{
+        storage.update(
+            String::from("1234"),
+            Customer {
+                guid: String::from("1234"),
+                first_name: String::from("Updated John"),
+                last_name: String::from("Updated Doe"),
+                email: String::from("updatedjohndoe@gmail.com"),
+                address: String::from("Updated address"),
+            },
+        )
+    }
+
     #[test]
     fn list_return_none_when_empty() {
         let storage = InMemoryStorage::init();
@@ -66,13 +89,7 @@ mod tests {
     #[test]
     fn list_return_some_when_not_empty() {
         let mut storage = InMemoryStorage::init();
-        storage.customers.push(Customer {
-            guid: String::from("1234"),
-            first_name: String::from("John"),
-            last_name: String::from("Doe"),
-            email: String::from("johndoe@gmail.com"),
-            address: String::from("address"),
-        });
+        add_customer(&mut storage);
         let list = storage.list();
         assert_eq!(true, list.is_some());
         assert_eq!(1, list.unwrap().len())
@@ -88,13 +105,7 @@ mod tests {
     #[test]
     fn get_return_some_when_not_empty() {
         let mut storage = InMemoryStorage::init();
-        storage.customers.push(Customer {
-            guid: String::from("1234"),
-            first_name: String::from("John"),
-            last_name: String::from("Doe"),
-            email: String::from("johndoe@gmail.com"),
-            address: String::from("address"),
-        });
+        add_customer(&mut storage);
         let customer = storage.get(String::from("1234"));
         assert_eq!(true, customer.is_some());
     }
@@ -102,13 +113,7 @@ mod tests {
     #[test]
     fn get_return_none_when_passed_empty_guid() {
         let mut storage = InMemoryStorage::init();
-        storage.customers.push(Customer {
-            guid: String::from("1234"),
-            first_name: String::from("John"),
-            last_name: String::from("Doe"),
-            email: String::from("johndoe@gmail.com"),
-            address: String::from("address"),
-        });
+        add_customer(&mut storage);
         let customer = storage.get(String::from(""));
         assert_eq!(true, customer.is_none());
     }
@@ -116,67 +121,28 @@ mod tests {
     #[test]
     fn creates_customer() {
         let mut storage = InMemoryStorage::init();
-        storage.customers.push(Customer {
-            guid: String::from("1234"),
-            first_name: String::from("John"),
-            last_name: String::from("Doe"),
-            email: String::from("johndoe@gmail.com"),
-            address: String::from("address"),
-        });
+        add_customer(&mut storage);
     }
 
     #[test]
     fn update_customer_returns_true_when_exists() {
         let mut storage = InMemoryStorage::init();
-        storage.customers.push(Customer {
-            guid: String::from("1234"),
-            first_name: String::from("John"),
-            last_name: String::from("Doe"),
-            email: String::from("johndoe@gmail.com"),
-            address: String::from("address"),
-        });
-
-        let updated = storage.update(
-            String::from("1234"),
-            Customer {
-                guid: String::from("1234"),
-                first_name: String::from("Updated John"),
-                last_name: String::from("Updated Doe"),
-                email: String::from("updatedjohndoe@gmail.com"),
-                address: String::from("Updated address"),
-            },
-        );
-
+        add_customer(&mut storage);
+        let updated = update_customer(&mut storage);
         assert_eq!(true, updated)
     }
 
     #[test]
     fn update_customer_returns_false_when_not_exists() {
         let mut storage = InMemoryStorage::init();
-        let updated = storage.update(
-            String::from("1234"),
-            Customer {
-                guid: String::from("1234"),
-                first_name: String::from("Updated John"),
-                last_name: String::from("Updated Doe"),
-                email: String::from("updatedjohndoe@gmail.com"),
-                address: String::from("Updated address"),
-            },
-        );
-
+        let updated = update_customer(&mut storage);
         assert_eq!(false, updated)
     }
 
     #[test]
     fn deletes_customer_when_exists() {
         let mut storage = InMemoryStorage::init();
-        storage.customers.push(Customer {
-            guid: String::from("1234"),
-            first_name: String::from("John"),
-            last_name: String::from("Doe"),
-            email: String::from("johndoe@gmail.com"),
-            address: String::from("address"),
-        });
+        add_customer(&mut storage);
         storage.delete(String::from("1234"));
         assert_eq!(0, storage.customers.len())
     }
@@ -184,13 +150,7 @@ mod tests {
     #[test]
     fn not_deletes_customer_when_not_exists() {
         let mut storage = InMemoryStorage::init();
-        storage.customers.push(Customer {
-            guid: String::from("1234"),
-            first_name: String::from("John"),
-            last_name: String::from("Doe"),
-            email: String::from("johndoe@gmail.com"),
-            address: String::from("address"),
-        });
+        add_customer(&mut storage);
         storage.delete(String::from("12345"));
         assert_eq!(1, storage.customers.len())
     }
