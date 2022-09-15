@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
-#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, ToSchema, Serialize, Deserialize)]
 pub struct Customer {
     /// A unique identifier for this customer.
     pub guid: String,
