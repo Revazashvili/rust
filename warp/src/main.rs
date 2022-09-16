@@ -23,6 +23,16 @@ async fn main() {
 
     #[derive(OpenApi)]
     #[openapi(
+        paths(
+            handlers::list_customers,
+            handlers::get_customer,
+            handlers::create_customer,
+            handlers::update_customer,
+            handlers::delete_customer,
+        ),
+        components(
+            schemas(models::Customer)
+        ),
         tags(
             (name = "customers", description = "customers management API")
         )
